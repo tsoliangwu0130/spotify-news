@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request
+from flask import Flask, redirect, render_template, request
 from urllib.parse import quote_plus, urlencode
 
 import json
@@ -17,6 +17,9 @@ REDIRECT_URI = '{}:{}/callback'.format(CLIENT_SIDE_URL, PORT)
 
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'
 SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token'
+SPOTIFY_API_BASE_URL = 'https://api.spotify.com/v1'
+SPOTIFY_API_USER_PROFILE_ENDPOINT = SPOTIFY_API_BASE_URL + '/me'
+SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT = SPOTIFY_API_USER_PROFILE_ENDPOINT + '/player'
 
 
 @app.route('/')
@@ -46,14 +49,20 @@ def callback():
         data=token_payload,
         auth=(CLIENT_ID, CLIENT_SECRET)
     )
-    token_json = json.loads(token_result.text)
-    token_header = {'Authorization': '{} {}'.format(token_json['token_type'], token_json['access_token'])}
+    token_data = json.loads(token_result.text)
+    token_header = {'Authorization': '{} {}'.format(token_data['token_type'], token_data['access_token'])}
 
-    user_profile_api_endpoint = 'https://api.spotify.com/v1/me/player'
-    profile_response = requests.get(user_profile_api_endpoint, headers=token_header)
-    profile_data = json.loads(profile_response.text)
+    profile_res = requests.get(SPOTIFY_API_USER_PROFILE_ENDPOINT, headers=token_header)
+    cur_playback_res = requests.get(SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT, headers=token_header)
 
-    return json.dumps(profile_data, indent=4, sort_keys=True)
+    profile_data = json.loads(profile_res.text)
+    cur_playback_data = json.loads(cur_playback_res.text)
+
+    print(json.dumps(profile_data, indent=4, sort_keys=True))
+    print('==============')
+    print(json.dumps(cur_playback_data, indent=4, sort_keys=True))
+
+    return render_template('index.html', profile=profile_data, cur_playback=cur_playback_data)
 
 
 if __name__ == '__main__':

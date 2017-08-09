@@ -5,6 +5,7 @@
         <title>Hello Spotify Web Lyrics!</title>
     </head>
     <body>
-        <p>Hello from flask app</p>
+        <h1>Hello {{ profile.display_name }}!</h1>
+        <p>You are now listening {{ cur_playback.item.artists[0].name }}'s {{ cur_playback.item.name }}</p>
     </body>
 </html>
