@@ -25,6 +25,9 @@ SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT = SPOTIFY_API_USER_PROFILE_ENDPOINT + '/pl
 
 @app.route('/')
 def index():
+    if not TOKEN_HEADER:
+        return redirect(url_for('login'))
+
     profile_res = requests.get(SPOTIFY_API_USER_PROFILE_ENDPOINT, headers=TOKEN_HEADER)
     cur_playback_res = requests.get(SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT, headers=TOKEN_HEADER)
 
