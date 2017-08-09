@@ -9,6 +9,7 @@ app.config.from_object('config')
 
 CLIENT_ID = app.config['CLIENT_ID']
 CLIENT_SECRET = app.config['CLIENT_SECRET']
+SCOPE = 'user-read-currently-playing user-read-playback-state'
 
 CLIENT_SIDE_URL = 'http://localhost'
 PORT = 8888
@@ -23,7 +24,8 @@ def index():
     auth_payload = {
         'client_id': CLIENT_ID,
         'response_type': 'code',
-        'redirect_uri': REDIRECT_URI
+        'redirect_uri': REDIRECT_URI,
+        'scope': SCOPE
     }
     encoded_auth_url = '{}/?{}'.format(
         SPOTIFY_AUTH_URL,
@@ -47,7 +49,7 @@ def callback():
     token_json = json.loads(token_result.text)
     token_header = {'Authorization': '{} {}'.format(token_json['token_type'], token_json['access_token'])}
 
-    user_profile_api_endpoint = 'https://api.spotify.com/v1/me'
+    user_profile_api_endpoint = 'https://api.spotify.com/v1/me/player'
     profile_response = requests.get(user_profile_api_endpoint, headers=token_header)
     profile_data = json.loads(profile_response.text)
 
