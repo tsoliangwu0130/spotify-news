@@ -1,16 +1,17 @@
 from flask import Flask, redirect, request
 from urllib.parse import quote_plus, urlencode
 
-CLIENT_ID = ''
-CLIENT_SECRET = ''
+app = Flask(__name__)
+app.config.from_object('config')
+
+CLIENT_ID = app.config['CLIENT_ID']
+CLIENT_SECRET = app.config['CLIENT_SECRET']
 
 CLIENT_SIDE_URL = 'http://localhost'
 PORT = 8888
 REDIRECT_URI = '{}:{}/callback'.format(CLIENT_SIDE_URL, PORT)
 
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'
-
-app = Flask(__name__)
 
 
 @app.route('/')
