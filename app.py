@@ -1,6 +1,7 @@
 from flask import Flask, redirect, request
 from urllib.parse import quote_plus, urlencode
 
+import json
 import requests
 
 app = Flask(__name__)
@@ -38,13 +39,19 @@ def callback():
         'code': request.args['code'],
         'redirect_uri': REDIRECT_URI
     }
-    result = requests.post(
+    token_result = requests.post(
         SPOTIFY_TOKEN_URL,
         data=token_payload,
         auth=(CLIENT_ID, CLIENT_SECRET)
     )
-    print('>>>', result.text)
-    return 'Hello callback'
+    token_json = json.loads(token_result.text)
+    token_header = {'Authorization': '{} {}'.format(token_json['token_type'], token_json['access_token'])}
+
+    user_profile_api_endpoint = 'https://api.spotify.com/v1/me'
+    profile_response = requests.get(user_profile_api_endpoint, headers=token_header)
+    profile_data = json.loads(profile_response.text)
+
+    return json.dumps(profile_data, indent=4, sort_keys=True)
 
 
 if __name__ == '__main__':
