@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request
+from flask import Flask, redirect, render_template, request, url_for
 from urllib.parse import quote_plus, urlencode
 
 import json
@@ -10,6 +10,7 @@ app.config.from_object('config')
 CLIENT_ID = app.config['CLIENT_ID']
 CLIENT_SECRET = app.config['CLIENT_SECRET']
 SCOPE = 'user-read-currently-playing user-read-playback-state'
+TOKEN_HEADER = {}
 
 CLIENT_SIDE_URL = 'http://localhost'
 PORT = 8888
@@ -24,6 +25,21 @@ SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT = SPOTIFY_API_USER_PROFILE_ENDPOINT + '/pl
 
 @app.route('/')
 def index():
+    profile_res = requests.get(SPOTIFY_API_USER_PROFILE_ENDPOINT, headers=TOKEN_HEADER)
+    cur_playback_res = requests.get(SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT, headers=TOKEN_HEADER)
+
+    profile_data = json.loads(profile_res.text)
+    cur_playback_data = json.loads(cur_playback_res.text)
+
+    print(json.dumps(profile_data, indent=4, sort_keys=True))
+    print('==============')
+    print(json.dumps(cur_playback_data, indent=4, sort_keys=True))
+
+    return render_template('index.html', profile=profile_data, cur_playback=cur_playback_data)
+
+
+@app.route('/login')
+def login():
     auth_payload = {
         'client_id': CLIENT_ID,
         'response_type': 'code',
@@ -39,6 +55,8 @@ def index():
 
 @app.route('/callback')
 def callback():
+    global TOKEN_HEADER
+
     token_payload = {
         'grant_type': 'authorization_code',
         'code': request.args['code'],
@@ -50,19 +68,9 @@ def callback():
         auth=(CLIENT_ID, CLIENT_SECRET)
     )
     token_data = json.loads(token_result.text)
-    token_header = {'Authorization': '{} {}'.format(token_data['token_type'], token_data['access_token'])}
+    TOKEN_HEADER = {'Authorization': '{} {}'.format(token_data['token_type'], token_data['access_token'])}
 
-    profile_res = requests.get(SPOTIFY_API_USER_PROFILE_ENDPOINT, headers=token_header)
-    cur_playback_res = requests.get(SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT, headers=token_header)
-
-    profile_data = json.loads(profile_res.text)
-    cur_playback_data = json.loads(cur_playback_res.text)
-
-    print(json.dumps(profile_data, indent=4, sort_keys=True))
-    print('==============')
-    print(json.dumps(cur_playback_data, indent=4, sort_keys=True))
-
-    return render_template('index.html', profile=profile_data, cur_playback=cur_playback_data)
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
