@@ -58,6 +58,7 @@ def index():
     cur_playback_data = json.loads(cur_playback_res.text)
 
     artists = cur_playback_data['item']['artists']
+    # TODO: fetch all artists' news
     artist = artists[0]['name']
 
     fetched_news = fetch_news(artist)
