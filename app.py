@@ -3,6 +3,7 @@ from flask import Flask, redirect, render_template, request, url_for
 from urllib.parse import quote_plus, urlencode
 
 import json
+import re
 import requests
 
 app = Flask(__name__)
@@ -39,7 +40,7 @@ def fetch_news(q):
 
     for item in news:
         title = item.find('h3').text
-        url = item.find('a')['href']
+        url = re.findall(r'(http.+?)&', item.find('a')['href'])[0]
         fetched_news.append({'title': title, 'url': url})
     return fetched_news
 
