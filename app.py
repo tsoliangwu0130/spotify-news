@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 from flask import Flask, redirect, render_template, request, url_for
 from urllib.parse import quote_plus, urlencode
 
@@ -22,6 +23,19 @@ SPOTIFY_API_BASE_URL = 'https://api.spotify.com/v1'
 SPOTIFY_API_USER_PROFILE_ENDPOINT = SPOTIFY_API_BASE_URL + '/me'
 SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT = SPOTIFY_API_USER_PROFILE_ENDPOINT + '/player'
 
+GOOGLE_SEARCH_URL = 'https://www.google.com/search'
+
+
+def fetch_news(q):
+    search_payload = {
+        'q': q,
+        'tbm': 'nws'
+    }
+    res_html = requests.get(url=GOOGLE_SEARCH_URL, params=search_payload)
+    soup = BeautifulSoup(res_html.text, 'html.parser')
+    print(soup.prettify())
+    return None
+
 
 @app.route('/')
 def index():
@@ -34,6 +48,10 @@ def index():
     profile_data = json.loads(profile_res.text)
     cur_playback_data = json.loads(cur_playback_res.text)
 
+    artists = cur_playback_data['item']['artists']
+    artist = artists[0]['name']
+
+    fetch_news(artist)
     return render_template('index.html', profile=profile_data, cur_playback=cur_playback_data)
 
 
