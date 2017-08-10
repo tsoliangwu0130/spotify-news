@@ -9,7 +9,7 @@
     <body>
         <p>Hello <a href="{{ profile.external_urls.spotify }}">{{ profile.display_name }}</a>!</p>
 
-        <p>You are now listening: <a href="{{ cur_playback.item.external_urls.spotify }}">{{ cur_playback.item.name }}</a></p>
+        <p>You are now listening: <a href="{{ cur_playback.item.external_urls.spotify }}">{{ cur_playback.item.name }}</a> - <a href="{{ cur_playback.item.album.external_urls.spotify }}">{{ cur_playback.item.album.name }}</a></p>
         <p>Artist(s):
         {% for artist in cur_playback.item.artists %}
             <a href="{{ artist.external_urls.spotify }}">{{ artist.name }}</a>{{ "," if not loop.last }}
