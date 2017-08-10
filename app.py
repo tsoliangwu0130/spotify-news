@@ -1,10 +1,9 @@
-from bs4 import BeautifulSoup
-from flask import Flask, redirect, render_template, request, url_for
-from urllib.parse import quote_plus, urlencode
-
 import json
 import re
 import requests
+from bs4 import BeautifulSoup
+from flask import Flask, redirect, render_template, request, url_for
+from urllib.parse import quote_plus, urlencode
 
 app = Flask(__name__)
 app.config.from_object('config')
