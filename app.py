@@ -27,14 +27,21 @@ GOOGLE_SEARCH_URL = 'https://www.google.com/search'
 
 
 def fetch_news(q):
+    fetched_news = []
+
     search_payload = {
         'q': q,
         'tbm': 'nws'
     }
     res_html = requests.get(url=GOOGLE_SEARCH_URL, params=search_payload)
     soup = BeautifulSoup(res_html.text, 'html.parser')
-    print(soup.prettify())
-    return None
+    news = soup.find('div', {'id': 'ires'}).find_all('div', {'class': 'g'})
+
+    for item in news:
+        title = item.find('h3').text
+        url = item.find('a')['href']
+        fetched_news.append({'title': title, 'url': url})
+    return fetched_news
 
 
 @app.route('/')
@@ -51,8 +58,13 @@ def index():
     artists = cur_playback_data['item']['artists']
     artist = artists[0]['name']
 
-    fetch_news(artist)
-    return render_template('index.html', profile=profile_data, cur_playback=cur_playback_data)
+    fetched_news = fetch_news(artist)
+    return render_template(
+        'index.html',
+        profile=profile_data,
+        cur_playback=cur_playback_data,
+        fetched_news=fetched_news
+    )
 
 
 @app.route('/login')
