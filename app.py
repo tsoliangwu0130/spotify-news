@@ -41,7 +41,8 @@ def fetch_news(q):
     for item in news:
         title = item.find('h3').text
         url = re.findall(r'(http.+?)&', item.find('a')['href'])[0]
-        fetched_news.append({'title': title, 'url': url})
+        prev_content = item.find('div', {'class': 'st'}).text
+        fetched_news.append({'title': title, 'url': url, 'prev_content': prev_content})
     return fetched_news
 
 
