@@ -34,10 +34,6 @@ def index():
     profile_data = json.loads(profile_res.text)
     cur_playback_data = json.loads(cur_playback_res.text)
 
-    print(json.dumps(profile_data, indent=4, sort_keys=True))
-    print('==============')
-    print(json.dumps(cur_playback_data, indent=4, sort_keys=True))
-
     return render_template('index.html', profile=profile_data, cur_playback=cur_playback_data)
 
 
