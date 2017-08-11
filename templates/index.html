@@ -8,26 +8,32 @@
     </head>
     <body>
         <div class="container">
-            <p>Hello <a href="{{ profile.external_urls.spotify }}">{{ profile.display_name }}</a>!</p>
+            <div class="row">
+                <p>Hello <a href="{{ profile.external_urls.spotify }}">{{ profile.display_name }}</a>!</p>
+            </div>
 
-            <p>You are now listening: <a href="{{ cur_playback.item.external_urls.spotify }}">{{ cur_playback.item.name }}</a> - <a href="{{ cur_playback.item.album.external_urls.spotify }}">{{ cur_playback.item.album.name }}</a></p>
+            <div class="row">
+                <p>You are now listening: <a href="{{ cur_playback.item.external_urls.spotify }}">{{ cur_playback.item.name }}</a> - <a href="{{ cur_playback.item.album.external_urls.spotify }}">{{ cur_playback.item.album.name }}</a></p>
+            </div>
 
-            <p>Artist(s):
-            {% for artist in cur_playback.item.artists %}
-                <a href="{{ artist.external_urls.spotify }}">{{ artist.name }}</a>{{ "," if not loop.last }}
-            {% endfor %}
-            </p>
+            <div class="row">
+                <p>Artist(s):
+                {% for artist in cur_playback.item.artists %}
+                    <a href="{{ artist.external_urls.spotify }}">{{ artist.name }}</a>{{ "," if not loop.last }}
+                {% endfor %}
+                </p>
+            </div>
 
-            <p>News:
-                <ul>
-                    {% for news in fetched_news %}
-                    <li>
-                        <a href="{{ news.url }}">{{ news.title }}</a>
-                        <p>{{ news.preview_content }}</p>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </p>
+            <div class="row">
+                <p>News:</p>
+                <div class="w-100"></div>
+                {% for news in fetched_news %}
+                <div class="col-4">
+                    <h6><a href="{{ news.url }}">{{ news.title }}</a></h6>
+                    <p>{{ news.preview_content }}</p>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </body>
     <!-- Scripts -->
