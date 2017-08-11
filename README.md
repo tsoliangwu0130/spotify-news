@@ -1,4 +1,4 @@
-# To-do List API
+# Spotify News
 
 A [Flask](http://flask.pocoo.org/) app to retrieve the singers' latest news according to your [Spotify](https://www.spotify.com/) current playing song.
 
