@@ -10,13 +10,10 @@ app = Flask(__name__)
 
 CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
+REDIRECT_URI = os.environ['REDIRECT_URI']
 SCOPE = 'user-read-currently-playing user-read-playback-state'
 ACCESS_TOKEN = ''
 REFRESH_TOKEN = ''
-
-CLIENT_SIDE_URL = 'http://localhost'
-PORT = 8888
-REDIRECT_URI = '{}:{}/callback'.format(CLIENT_SIDE_URL, PORT)
 
 SPOTIFY_AUTH_URL = 'https://accounts.spotify.com/authorize'
 SPOTIFY_TOKEN_URL = 'https://accounts.spotify.com/api/token'
@@ -126,5 +123,4 @@ def callback():
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", PORT))
-    app.run(host='0.0.0.0', port=port)
+    app.run()
