@@ -27,6 +27,16 @@ SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT = SPOTIFY_API_USER_PROFILE_ENDPOINT + '/pl
 GOOGLE_SEARCH_URL = 'https://www.google.com/search'
 
 
+def request_token(token_payload):
+    token_result = requests.post(
+        SPOTIFY_TOKEN_URL,
+        data=token_payload,
+        auth=(CLIENT_ID, CLIENT_SECRET)
+    )
+    token_data = json.loads(token_result.text)
+    return token_data
+
+
 def fetch_news(q):
     fetched_news = []
 
@@ -41,17 +51,32 @@ def fetch_news(q):
     for item in news:
         title = item.find('h3').text
         url = re.findall(r'(http.+?)&', item.find('a')['href'])[0]
-        prev_content = item.find('div', {'class': 'st'}).text
-        fetched_news.append({'title': title, 'url': url, 'prev_content': prev_content})
+        preview_content = item.find('div', {'class': 'st'}).text
+        fetched_news.append({'title': title, 'url': url, 'preview_content': preview_content})
     return fetched_news
 
 
 @app.route('/')
 def index():
-    if not ACCESS_TOKEN:
+    global ACCESS_TOKEN
+
+    # Request access token and refresh token while first login
+    if not ACCESS_TOKEN and not REFRESH_TOKEN:
         return redirect(url_for('login'))
 
     headers = {'Authorization': '{} {}'.format('Bearer', ACCESS_TOKEN)}
+    status_code = requests.get(SPOTIFY_API_BASE_URL, headers=headers).status_code
+
+    # Refresh token while current access token is expired
+    if status_code == 401 and REFRESH_TOKEN:
+        token_payload = {
+            'grant_type': 'refresh_token',
+            'refresh_token': REFRESH_TOKEN
+        }
+        print('* Access token is expired. Requesting a new token...')
+        token_data = request_token(token_payload)
+        ACCESS_TOKEN = token_data['access_token']
+        headers = {'Authorization': '{} {}'.format('Bearer', ACCESS_TOKEN)}
 
     profile_res = requests.get(SPOTIFY_API_USER_PROFILE_ENDPOINT, headers=headers)
     cur_playback_res = requests.get(SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT, headers=headers)
@@ -96,12 +121,7 @@ def callback():
         'code': request.args['code'],
         'redirect_uri': REDIRECT_URI
     }
-    token_result = requests.post(
-        SPOTIFY_TOKEN_URL,
-        data=token_payload,
-        auth=(CLIENT_ID, CLIENT_SECRET)
-    )
-    token_data = json.loads(token_result.text)
+    token_data = request_token(token_payload)
     REFRESH_TOKEN = token_data['refresh_token']
     ACCESS_TOKEN = token_data['access_token']
 

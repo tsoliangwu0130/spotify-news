@@ -20,7 +20,7 @@
         <p>News:
             <ul>{% for news in fetched_news %}
                 <li><a href="{{ news.url }}">{{ news.title }}</a></li>
-                <p>{{ news.prev_content }}</p>
+                <p>{{ news.preview_content }}</p>
             {% endfor %}</ul>
         </p>
     </body>
