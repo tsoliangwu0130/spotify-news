@@ -60,8 +60,6 @@ def fetch_news(artists):
 def index():
     global ACCESS_TOKEN
 
-    # TODO: Fix 302 issue
-
     # Request access token and refresh token while first login
     if not ACCESS_TOKEN and not REFRESH_TOKEN:
         return redirect(url_for('login'))
