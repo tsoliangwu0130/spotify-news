@@ -37,21 +37,22 @@ def request_token(token_payload):
     return token_data
 
 
-def fetch_news(q):
+def fetch_news(artists):
     fetched_news = []
-    search_payload = {
-        'q': q,
-        'tbm': 'nws'
-    }
-    res_html = requests.get(url=GOOGLE_SEARCH_URL, params=search_payload)
-    soup = BeautifulSoup(res_html.text, 'html.parser')
-    news = soup.find('div', {'id': 'ires'}).find_all('div', {'class': 'g'})
+    for artist in artists:
+        search_payload = {
+            'q': artist['name'],
+            'tbm': 'nws'
+        }
+        res_html = requests.get(url=GOOGLE_SEARCH_URL, params=search_payload)
+        soup = BeautifulSoup(res_html.text, 'html.parser')
+        news = soup.find('div', {'id': 'ires'}).find_all('div', {'class': 'g'})
 
-    for item in news:
-        title = item.find('h3').text
-        url = re.findall(r'(http.+?)&', item.find('a')['href'])[0]
-        preview_content = item.find('div', {'class': 'st'}).text
-        fetched_news.append({'title': title, 'url': url, 'preview_content': preview_content})
+        for item in news:
+            title = item.find('h3').text
+            url = re.findall(r'(http.+?)&', item.find('a')['href'])[0]
+            preview_content = item.find('div', {'class': 'st'}).text
+            fetched_news.append({'title': title, 'url': url, 'preview_content': preview_content})
     return fetched_news
 
 
@@ -84,10 +85,7 @@ def index():
     cur_playback_data = json.loads(cur_playback_res.text)
 
     artists = cur_playback_data['item']['artists']
-    # TODO: fetch all artists' news
-    artist = artists[0]['name']
-
-    fetched_news = fetch_news(artist)
+    fetched_news = fetch_news(artists)
     return render_template(
         'index.html',
         profile=profile_data,
