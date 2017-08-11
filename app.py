@@ -11,7 +11,8 @@ app.config.from_object('config')
 CLIENT_ID = app.config['CLIENT_ID']
 CLIENT_SECRET = app.config['CLIENT_SECRET']
 SCOPE = 'user-read-currently-playing user-read-playback-state'
-TOKEN_HEADER = {}
+ACCESS_TOKEN = ''
+REFRESH_TOKEN = ''
 
 CLIENT_SIDE_URL = 'http://localhost'
 PORT = 8888
@@ -47,11 +48,13 @@ def fetch_news(q):
 
 @app.route('/')
 def index():
-    if not TOKEN_HEADER:
+    if not ACCESS_TOKEN:
         return redirect(url_for('login'))
 
-    profile_res = requests.get(SPOTIFY_API_USER_PROFILE_ENDPOINT, headers=TOKEN_HEADER)
-    cur_playback_res = requests.get(SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT, headers=TOKEN_HEADER)
+    headers = {'Authorization': '{} {}'.format('Bearer', ACCESS_TOKEN)}
+
+    profile_res = requests.get(SPOTIFY_API_USER_PROFILE_ENDPOINT, headers=headers)
+    cur_playback_res = requests.get(SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT, headers=headers)
 
     profile_data = json.loads(profile_res.text)
     cur_playback_data = json.loads(cur_playback_res.text)
@@ -86,7 +89,7 @@ def login():
 
 @app.route('/callback')
 def callback():
-    global TOKEN_HEADER
+    global ACCESS_TOKEN, REFRESH_TOKEN
 
     token_payload = {
         'grant_type': 'authorization_code',
@@ -99,7 +102,8 @@ def callback():
         auth=(CLIENT_ID, CLIENT_SECRET)
     )
     token_data = json.loads(token_result.text)
-    TOKEN_HEADER = {'Authorization': '{} {}'.format(token_data['token_type'], token_data['access_token'])}
+    REFRESH_TOKEN = token_data['refresh_token']
+    ACCESS_TOKEN = token_data['access_token']
 
     return redirect(url_for('index'))
 
