@@ -39,7 +39,6 @@ def request_token(token_payload):
 
 def fetch_news(q):
     fetched_news = []
-
     search_payload = {
         'q': q,
         'tbm': 'nws'
