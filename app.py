@@ -11,6 +11,7 @@ app = Flask(__name__)
 CLIENT_ID = os.environ['CLIENT_ID']
 CLIENT_SECRET = os.environ['CLIENT_SECRET']
 REDIRECT_URI = os.environ['REDIRECT_URI']
+PORT = 5000
 SCOPE = 'user-read-currently-playing user-read-playback-state'
 ACCESS_TOKEN = ''
 REFRESH_TOKEN = ''
@@ -123,4 +124,4 @@ def callback():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=PORT)
