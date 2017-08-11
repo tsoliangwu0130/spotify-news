@@ -7,10 +7,9 @@ from flask import Flask, redirect, render_template, request, url_for
 from urllib.parse import quote_plus, urlencode
 
 app = Flask(__name__)
-app.config.from_object('config')
 
-CLIENT_ID = app.config['CLIENT_ID']
-CLIENT_SECRET = app.config['CLIENT_SECRET']
+CLIENT_ID = os.environ['CLIENT_ID']
+CLIENT_SECRET = os.environ['CLIENT_SECRET']
 SCOPE = 'user-read-currently-playing user-read-playback-state'
 ACCESS_TOKEN = ''
 REFRESH_TOKEN = ''
