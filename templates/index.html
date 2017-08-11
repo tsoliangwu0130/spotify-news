@@ -7,22 +7,28 @@
         <title>Spotify News</title>
     </head>
     <body>
-        <p>Hello <a href="{{ profile.external_urls.spotify }}">{{ profile.display_name }}</a>!</p>
+        <div class="container">
+            <p>Hello <a href="{{ profile.external_urls.spotify }}">{{ profile.display_name }}</a>!</p>
 
-        <p>You are now listening: <a href="{{ cur_playback.item.external_urls.spotify }}">{{ cur_playback.item.name }}</a> - <a href="{{ cur_playback.item.album.external_urls.spotify }}">{{ cur_playback.item.album.name }}</a></p>
+            <p>You are now listening: <a href="{{ cur_playback.item.external_urls.spotify }}">{{ cur_playback.item.name }}</a> - <a href="{{ cur_playback.item.album.external_urls.spotify }}">{{ cur_playback.item.album.name }}</a></p>
 
-        <p>Artist(s):
-        {% for artist in cur_playback.item.artists %}
-            <a href="{{ artist.external_urls.spotify }}">{{ artist.name }}</a>{{ "," if not loop.last }}
-        {% endfor %}
-        </p>
+            <p>Artist(s):
+            {% for artist in cur_playback.item.artists %}
+                <a href="{{ artist.external_urls.spotify }}">{{ artist.name }}</a>{{ "," if not loop.last }}
+            {% endfor %}
+            </p>
 
-        <p>News:
-            <ul>{% for news in fetched_news %}
-                <li><a href="{{ news.url }}">{{ news.title }}</a></li>
-                <p>{{ news.preview_content }}</p>
-            {% endfor %}</ul>
-        </p>
+            <p>News:
+                <ul>
+                    {% for news in fetched_news %}
+                    <li>
+                        <a href="{{ news.url }}">{{ news.title }}</a>
+                        <p>{{ news.preview_content }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </p>
+        </div>
     </body>
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
