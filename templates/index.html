@@ -28,7 +28,9 @@
                 {% for news in fetched_news %}
                 <div class="col-4" style="margin-bottom: 2em;">
                     <div class="card" style="height: 100%;">
-                        <h6 class="card-header">{{ news.title }}</h6>
+                        <div class="card-header">
+                            <h6>{{ news.title }}</h6>
+                        </div>
                         <div class="card-block">
                             <img src="{{ news.img_src }}" style="float: left; margin-right: 0.5em; width: 80px; height: 80px;">
                             <p class="card-text">{{ news.preview_content }}</p>
