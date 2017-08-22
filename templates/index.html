@@ -7,16 +7,15 @@
         <title>Spotify News</title>
     </head>
     <body>
-        <div class="container">
+        <div class="container" style="padding-top: 1em;">
             <div class="row">
-                <h6>Hello <a href="{{ profile.external_urls.spotify }}">{{ profile.display_name }}</a>!</h6>
+                <div class="alert alert-success" role="alert" style="width: 100%;">
+                    Hello <a href="{{ profile.external_urls.spotify }}" class="alert-link">{{ profile.display_name }}</a>!
+                </div>
             </div>
 
-            <div class="row">
+            <div class="row-fluid" style="margin-bottom: 1em;">
                 <h6>You are now listening: <a href="{{ cur_playback.item.external_urls.spotify }}">{{ cur_playback.item.name }}</a> - <a href="{{ cur_playback.item.album.external_urls.spotify }}">{{ cur_playback.item.album.name }}</a></h6>
-            </div>
-
-            <div class="row">
                 <h6>Artist(s):
                 {% for artist in cur_playback.item.artists %}
                     <a href="{{ artist.external_urls.spotify }}">{{ artist.name }}</a>{{ "," if not loop.last }}
@@ -25,7 +24,6 @@
             </div>
 
             <div class="row">
-                <h6>News:</h6>
                 <div class="w-100"></div>
                 {% for news in fetched_news %}
                 <div class="col-4" style="margin-bottom: 2em;">
