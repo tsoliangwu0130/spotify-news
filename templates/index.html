@@ -30,6 +30,7 @@
                 {% for news in fetched_news %}
                 <div class="col-4">
                     <h6><a href="{{ news.url }}">{{ news.title }}</a></h6>
+                    <img src="{{ news.img_src }}" alt="">
                     <p>{{ news.preview_content }}</p>
                 </div>
                 {% endfor %}
