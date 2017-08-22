@@ -28,10 +28,17 @@
                 <h6>News:</h6>
                 <div class="w-100"></div>
                 {% for news in fetched_news %}
-                <div class="col-4">
-                    <h6><a href="{{ news.url }}">{{ news.title }}</a></h6>
-                    <img src="{{ news.img_src }}" alt="">
-                    <p>{{ news.preview_content }}</p>
+                <div class="col-4" style="margin-bottom: 2em;">
+                    <div class="card" style="height: 100%;">
+                        <h6 class="card-header">{{ news.title }}</h6>
+                        <div class="card-block">
+                            <img src="{{ news.img_src }}" style="float: left; margin-right: 0.5em; width: 80px; height: 80px;">
+                            <p class="card-text">{{ news.preview_content }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted"><a href="{{ news.url }}">Read more...</a></small>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
