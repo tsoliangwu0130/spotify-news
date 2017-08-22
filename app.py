@@ -49,12 +49,12 @@ def fetch_news(artists):
         for item in news:
             title = item.find('h3').text
             url = re.findall(r'(http.+?)&', item.find('a')['href'])[0]
-            img_src = item.find('img', {'class': 'th'})['src']
+            img_src = item.find('img', {'class': 'th'})
             preview_content = item.find('div', {'class': 'st'}).text
             fetched_news.append({
                 'title': title,
                 'url': url,
-                'img_src': img_src,
+                'img_src': img_src['src'] if img_src else None,
                 'preview_content': preview_content
             })
     return fetched_news
