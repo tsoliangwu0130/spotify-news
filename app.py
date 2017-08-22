@@ -24,6 +24,8 @@ SPOTIFY_API_CURRENT_PLAYBACK_ENDPOINT = SPOTIFY_API_USER_PROFILE_ENDPOINT + '/pl
 
 GOOGLE_SEARCH_URL = 'https://www.google.com/search'
 
+IMAGE_NOT_FOUND_URL = 'https://cdn.browshot.com/static/images/not-found.png'
+
 
 def request_token(token_payload):
     token_result = requests.post(
@@ -54,7 +56,7 @@ def fetch_news(artists):
             fetched_news.append({
                 'title': title,
                 'url': url,
-                'img_src': img_src['src'] if img_src else None,
+                'img_src': img_src['src'] if img_src else IMAGE_NOT_FOUND_URL,
                 'preview_content': preview_content
             })
     return fetched_news
