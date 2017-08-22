@@ -1,8 +1,10 @@
 # Spotify News
 
-A [Flask](http://flask.pocoo.org/) app to retrieve the singers' latest news according to your [Spotify](https://www.spotify.com/) current playing song.
+A [Flask](http://flask.pocoo.org/) app (Python 3) to retrieve the singers' latest news according to your [Spotify](https://www.spotify.com/) current playing song.
 
 ## Configuration
+
+Register a application with [Spotify Developer](https://developer.spotify.com/), then export `Client ID`, `Client Secret` and `Redirect URIs` as environment variables:
 
 ```
 $ export CLIENT_ID='<CLIENT_ID>'
@@ -12,13 +14,13 @@ $ export REDIRECT_URI='http://localhost:5000/callback'
 
 ## Usage
 
-To install app dependencies, simply run:
+1. To install app dependencies, simply run:
 
 ```
 $ pip install -r requirements.txt
 ```
 
-Start the app at [localhost:5000](http://localhost:5000):
+2. Start the app at [localhost:5000](http://localhost:5000):
 
 ```
 $ python app.py
