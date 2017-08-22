@@ -28,15 +28,13 @@
                 {% for news in fetched_news %}
                 <div class="col-4" style="margin-bottom: 2em;">
                     <div class="card" style="height: 100%;">
-                        <div class="card-header">
-                            <h6>{{ news.title }}</h6>
-                        </div>
                         <div class="card-block">
+                            <h5 class="card-text" style="margin-bottom: 1em;">{{ news.title }}</h5>
                             <img src="{{ news.img_src }}" style="float: left; margin-right: 0.5em; width: 80px; height: 80px;">
                             <p class="card-text">{{ news.preview_content }}</p>
                         </div>
-                        <div class="card-footer">
-                            <small class="text-muted"><a href="{{ news.url }}">Read more...</a></small>
+                        <div class="card-footer text-center">
+                            <a href="{{ news.url }}" class="btn btn-primary">Read more</a>
                         </div>
                     </div>
                 </div>
