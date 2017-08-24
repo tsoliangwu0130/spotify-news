@@ -26,6 +26,25 @@ $ pip install -r requirements.txt
 $ python app.py
 ```
 
+## Docker
+
+[Dockerfile](Dockerfile) is also provided. To run this app in a container, just simply install [Docker](https://www.docker.com/) first, then:
+
+1. Build the docker image:
+
+```
+$ docker build -t tsoliang/spotify-news .
+```
+
+2. Pass the environment variables to Docker container then start the container and expose the container port to local port 5000:
+
+```
+$ docker run -p 5000:5000 -d \
+-e CLIENT_ID='<CLIENT_ID>' \
+-e CLIENT_SECRET='<CLIENT_SECRET>' \
+-e REDIRECT_URI='http://localhost:5000/callback' \
+tsoliang/spotify-news
+
 ##  Screenshot
 
 ![screen shot](/images/screenshot.jpg)
