@@ -44,6 +44,7 @@ $ docker run -p 5000:5000 -d \
 -e CLIENT_SECRET='<CLIENT_SECRET>' \
 -e REDIRECT_URI='http://localhost:5000/callback' \
 tsoliang/spotify-news
+```
 
 ##  Screenshot
 
