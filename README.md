@@ -39,11 +39,11 @@ $ docker build -t tsoliang/spotify-news .
 2. Pass the environment variables to Docker container then start the container and expose the container port to local port 5000:
 
 ```
-$ docker run -p 5000:5000 -d \
--e CLIENT_ID='<CLIENT_ID>' \
--e CLIENT_SECRET='<CLIENT_SECRET>' \
--e REDIRECT_URI='http://localhost:5000/callback' \
-tsoliang/spotify-news
+$ docker run -d -p 5000:5000 \
+             -e CLIENT_ID='<CLIENT_ID>' \
+             -e CLIENT_SECRET='<CLIENT_SECRET>' \
+             -e REDIRECT_URI='http://localhost:5000/callback' \
+             tsoliang/spotify-news
 ```
 
 ##  Screenshot
