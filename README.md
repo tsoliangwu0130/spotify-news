@@ -1,4 +1,4 @@
-# Spotify News
+# Spotify News [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A [Flask](http://flask.pocoo.org/) app (Python 3) to retrieve the singers' latest news according to your [Spotify](https://www.spotify.com/) current playing song.
 
