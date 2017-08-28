@@ -4,7 +4,7 @@ A [Flask](http://flask.pocoo.org/) app (Python 3) to retrieve the singers' lates
 
 ## Configuration
 
-Register a application with [Spotify Developer](https://developer.spotify.com/), then export `Client ID`, `Client Secret` and `Redirect URIs` as environment variables:
+Register a application with [Spotify Developer](https://developer.spotify.com/), then export `CLIENT_ID`, `CLIENT_SECRET` and `REDIRECT_URI` as environment variables:
 
 ```
 $ export CLIENT_ID='<CLIENT_ID>'
