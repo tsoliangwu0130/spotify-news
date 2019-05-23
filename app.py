@@ -61,7 +61,6 @@ def fetch_news(artists):
             })
     return fetched_news
 
-
 @app.route('/')
 def index():
     global ACCESS_TOKEN
